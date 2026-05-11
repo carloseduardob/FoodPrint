@@ -1,0 +1,45 @@
+# Build artifacts
+**/build/
+*.apk
+*.aar
+*.ap_
+*.der
+*.ext
+
+# IDE - IntelliJ / Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Local configuration
+local.properties
+
+# Log files
+*.log
+
+# Android Captures and Proguard
+captures/
+proguard/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# External Native Build
+.externalNativeBuild
+.cxx/
+
+# Google Services
+google-services.json
+
+# Secrets
+secrets.properties
+*.jks
+*.keystore
