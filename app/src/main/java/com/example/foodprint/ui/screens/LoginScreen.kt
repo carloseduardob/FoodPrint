@@ -82,7 +82,10 @@ fun LoginScreen(
                 onClick = {
                     onLoginClick(email, password)
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
             ) {
                 Text("Login")
             }

@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.example.foodprint.ui.screens.LoginScreen
+import com.example.foodprint.ui.theme.FoodPrintTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val context = LocalContext.current
 
-    MaterialTheme {
+    FoodPrintTheme {
         Surface {
             LoginScreen { email, password ->
                 // Temporary login action (just shows a toast)
