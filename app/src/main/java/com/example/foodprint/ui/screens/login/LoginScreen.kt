@@ -1,4 +1,4 @@
-package com.example.foodprint.ui.screens
+package com.example.foodprint.ui.screens.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.foodprint.navigation.Routes
 
 @Composable
-fun LoginScreen(
-    onLoginClick: (email: String, password: String) -> Unit = { _, _ -> }
-) {
+fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -79,9 +79,7 @@ fun LoginScreen(
 
             // Login Button
             Button(
-                onClick = {
-                    onLoginClick(email, password)
-                },
+                onClick = { navController.navigate(Routes.Dashboard.route) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
