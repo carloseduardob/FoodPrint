@@ -7,6 +7,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import com.example.foodprint.navigation.Routes
 import com.example.foodprint.ui.screens.dashboard.components.ItemRow
 import com.example.foodprint.ui.screens.dashboard.components.Section
 import com.example.foodprint.ui.screens.dashboard.components.StatCard
+import com.example.foodprint.ui.theme.FoodPrintTheme
 
 @Composable
 fun DashboardScreen(navController: NavController) {
@@ -38,46 +40,62 @@ fun DashboardScreen(navController: NavController) {
     val todayItems = items.filter { it.isExpiringToday }
     val weekItems = items.filter { !it.isExpiringToday }
 
-    Scaffold(
-        bottomBar = {
-            BottomBar(navController)
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navController.navigate(Routes.Scanner.route)
-            }) {
-                Icon(Icons.Default.CameraAlt, null)
-            }
-        }
-    ) {padding ->
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)
+    FoodPrintTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(
-                text = "foodprint",
-                color = Green,
-                style = MaterialTheme.typography.titleLarge
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatCard("Vencendo Hoje", todayItems.count().toString(), Red, Modifier.weight(1f))
-                StatCard("Esta Semana", weekItems.count().toString(), color = Yellow, Modifier.weight(1f))
+            Scaffold(
+                bottomBar = {
+                    BottomBar(navController)
+                },
+                floatingActionButton = {
+                    FloatingActionButton(onClick = {
+                        navController.navigate(Routes.Scanner.route)
+                    }) {
+                        Icon(Icons.Default.CameraAlt, null)
+                    }
+                }
+            ) { padding ->
+                Column(
+                    modifier = Modifier
+                        .padding(padding)
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "foodprint",
+                        color = Green,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        StatCard(
+                            "Vencendo Hoje",
+                            todayItems.count().toString(),
+                            Red,
+                            Modifier.weight(1f)
+                        )
+                        StatCard(
+                            "Esta Semana",
+                            weekItems.count().toString(),
+                            color = Yellow,
+                            Modifier.weight(1f)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Section(
+                        title = "Vencendo Hoje",
+                        items = todayItems,
+                        borderColor = Red,
+                        tag = "Hoje"
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Section(
+                        title = "Vencendo Esta Semana",
+                        items = weekItems,
+                        borderColor = Yellow
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Section(
-                title = "Vencendo Hoje",
-                items = todayItems,
-                borderColor = Red,
-                tag = "Hoje"
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Section(
-                title = "Vencendo Esta Semana",
-                items = weekItems,
-                borderColor = Yellow
-            )
         }
     }
 }
