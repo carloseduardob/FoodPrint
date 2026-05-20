@@ -3,6 +3,7 @@ package com.example.foodprint.ui.screens.dashboard
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,7 @@ import com.example.foodprint.ui.screens.dashboard.components.ItemRow
 import com.example.foodprint.ui.screens.dashboard.components.Section
 import com.example.foodprint.ui.screens.dashboard.components.StatCard
 import com.example.foodprint.ui.theme.FoodPrintTheme
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun DashboardScreen(navController: NavController) {
@@ -71,14 +73,20 @@ fun DashboardScreen(navController: NavController) {
                         StatCard(
                             "Vencendo Hoje",
                             todayItems.count().toString(),
-                            Red,
-                            Modifier.weight(1f)
+                            color = Color(0xFFBB2622),
+                            Modifier.weight(1f),
+                            false,
+                            true,
+                            Color(0xFFFEF1F1)
                         )
                         StatCard(
                             "Esta Semana",
                             weekItems.count().toString(),
-                            color = Yellow,
-                            Modifier.weight(1f)
+                            color = Color(0xFFD18A0A),
+                            Modifier.weight(1f),
+                            false,
+                            true,
+                            Color(0xFFFEFBE7)
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
