@@ -94,7 +94,7 @@ fun DashboardScreen(navController: NavController) {
                             customYellowBackground
                         )
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(25.dp))
                     Section(
                         title = "Vencendo Hoje",
                         items = todayItems,
@@ -102,7 +102,7 @@ fun DashboardScreen(navController: NavController) {
                         tag = "Hoje",
                         itemBackgroundColor = customRedBackground
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(25.dp))
                     Section(
                         title = "Vencendo Esta Semana",
                         items = weekItems,
