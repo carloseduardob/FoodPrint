@@ -42,6 +42,11 @@ fun DashboardScreen(navController: NavController) {
     val todayItems = items.filter { it.isExpiringToday }
     val weekItems = items.filter { !it.isExpiringToday }
 
+    val customRedTitle = Color(0xFFBB2622)
+    val customRedBackground = Color(0xFFFEF1F1)
+    val customYellowTitle = Color(0xFFD18A0A)
+    val customYellowBackground = Color(0xFFFEFBE7)
+
     FoodPrintTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
@@ -73,34 +78,36 @@ fun DashboardScreen(navController: NavController) {
                         StatCard(
                             "Vencendo Hoje",
                             todayItems.count().toString(),
-                            color = Color(0xFFBB2622),
+                            color = customRedTitle,
                             Modifier.weight(1f),
                             false,
                             true,
-                            Color(0xFFFEF1F1)
+                            customRedBackground
                         )
                         StatCard(
                             "Esta Semana",
                             weekItems.count().toString(),
-                            color = Color(0xFFD18A0A),
+                            color = customYellowTitle,
                             Modifier.weight(1f),
                             false,
                             true,
-                            Color(0xFFFEFBE7)
+                            customYellowBackground
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Section(
                         title = "Vencendo Hoje",
                         items = todayItems,
-                        borderColor = Red,
-                        tag = "Hoje"
+                        borderColor = customRedTitle,
+                        tag = "Hoje",
+                        itemBackgroundColor = customRedBackground
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Section(
                         title = "Vencendo Esta Semana",
                         items = weekItems,
-                        borderColor = Yellow
+                        borderColor = customYellowTitle,
+                        itemBackgroundColor = customYellowBackground
                     )
                 }
             }

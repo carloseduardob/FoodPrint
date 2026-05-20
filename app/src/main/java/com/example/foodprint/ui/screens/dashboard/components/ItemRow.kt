@@ -13,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.example.foodprint.data.model.FoodItem
 
 @Composable
-fun ItemRow(item: FoodItem, color: Color) {
+fun ItemRow(item: FoodItem, color: Color, backgroundColor : Color) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF3F4F6), RoundedCornerShape(12.dp))
+            .background(backgroundColor, RoundedCornerShape(12.dp))
             .border(1.dp, color, RoundedCornerShape(12.dp))
             .padding(12.dp),
         horizontalArrangement = Arrangement.SpaceBetween

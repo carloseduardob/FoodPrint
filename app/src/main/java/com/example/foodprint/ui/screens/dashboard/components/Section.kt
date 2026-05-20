@@ -20,7 +20,8 @@ fun Section(
     title: String,
     items: List<FoodItem>,
     borderColor: Color,
-    tag: String? = null
+    tag: String? = null,
+    itemBackgroundColor : Color = Color(0xFFF3F4F6)
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -33,7 +34,7 @@ fun Section(
             Spacer(modifier = Modifier.height(8.dp))
 
             items.forEach { item ->
-                ItemRow(item, borderColor)
+                ItemRow(item, borderColor, itemBackgroundColor)
 
                 Spacer(modifier = Modifier.height(8.dp))
             }
