@@ -2,10 +2,14 @@ package com.example.foodprint.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val SoftWhite = Color(0xFFF9FAFB)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val MarronRed = Color(0xFFBB2622)
+val WhiteshiRed = Color(0xFFFEF1F1)
+
+val StrongOrange = Color(0xFFD18A0A)
+val WhiteshiYellow = Color(0xFFFEFBE7)
+
+val StrongGreen = Color(0xFF1BA641)
+val WeekGreen = Color(0xFF48B052)
+val WhiteshiGreen = Color(0xFFEFFCF2)
