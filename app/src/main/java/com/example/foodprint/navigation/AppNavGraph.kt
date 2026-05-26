@@ -5,6 +5,7 @@ import androidx.navigation.compose.*
 import androidx.navigation.compose.NavHost
 import com.example.foodprint.ui.screens.dashboard.DashboardScreen
 import com.example.foodprint.ui.screens.login.LoginScreen
+import com.example.foodprint.ui.screens.inventory.InventoryScreen
 
 @Composable
 fun AppNavGraph() {
@@ -21,7 +22,7 @@ fun AppNavGraph() {
             DashboardScreen(navController)
         }
         composable(Routes.Inventory.route) {
-            //InventoryScreen()
+            InventoryScreen(navController)
         }
         composable(Routes.Scanner.route) {
             //ScannerScreen()

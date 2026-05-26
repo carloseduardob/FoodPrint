@@ -4,17 +4,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import com.example.foodprint.navigation.Routes
 import com.example.foodprint.ui.theme.*
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomBar(navController: NavController) {
-    val selectedTab = remember { mutableStateOf(1) }
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     NavigationBar(
         containerColor = White,
@@ -22,11 +21,13 @@ fun BottomBar(navController: NavController) {
     ) {
 
         NavigationBarItem(
-            selected = selectedTab.value == 1,
+            selected = currentRoute == Routes.Dashboard.route,
             onClick = {
-                selectedTab.value = 1
-                navController.navigate(Routes.Dashboard.route)
-                      },
+                navController.navigate(Routes.Dashboard.route) {
+                    popUpTo(Routes.Dashboard.route)
+                    launchSingleTop = true
+                }
+            },
             icon = { Icon(Icons.Default.Home, null) },
             label = { Text("Início") },
             colors = NavigationBarItemDefaults.colors(
@@ -36,11 +37,13 @@ fun BottomBar(navController: NavController) {
         )
 
         NavigationBarItem(
-            selected = selectedTab.value == 2,
+            selected = currentRoute == Routes.Inventory.route,
             onClick = {
-                selectedTab.value = 2
-                //navController.navigate(Routes.Inventory.route)
-                      },
+                navController.navigate(Routes.Inventory.route) {
+                    popUpTo(Routes.Inventory.route)
+                    launchSingleTop = true
+                }
+            },
             icon = { Icon(Icons.Default.Inventory2, null) },
             label = { Text("Inventário") },
             colors = NavigationBarItemDefaults.colors(
@@ -50,11 +53,13 @@ fun BottomBar(navController: NavController) {
         )
 
         NavigationBarItem(
-            selected = selectedTab.value == 3,
+            selected = currentRoute == Routes.Scanner.route,
             onClick = {
-                selectedTab.value = 3
-                //navController.navigate(Routes.Scanner.route)
-                      },
+                navController.navigate(Routes.Scanner.route) {
+                    popUpTo(Routes.Scanner.route)
+                    launchSingleTop = true
+                }
+            },
             icon = { Icon(Icons.Default.CameraAlt, null) },
             label = { Text("Scanner") },
             colors = NavigationBarItemDefaults.colors(
@@ -64,11 +69,13 @@ fun BottomBar(navController: NavController) {
         )
 
         NavigationBarItem(
-            selected = selectedTab.value == 4,
+            selected = currentRoute == Routes.Chef.route,
             onClick = {
-                selectedTab.value = 4
-                //navController.navigate(Routes.Chef.route)
-                      },
+                navController.navigate(Routes.Chef.route) {
+                    popUpTo(Routes.Chef.route)
+                    launchSingleTop = true
+                }
+            },
             icon = { Icon(Icons.Default.Restaurant, null) },
             label = { Text("Chef") },
             colors = NavigationBarItemDefaults.colors(
@@ -78,11 +85,13 @@ fun BottomBar(navController: NavController) {
         )
 
         NavigationBarItem(
-            selected = selectedTab.value == 5,
+            selected = currentRoute == Routes.Shopping.route,
             onClick = {
-                selectedTab.value = 5
-                //navController.navigate(Routes.Shopping.route)
-                      },
+                navController.navigate(Routes.Shopping.route) {
+                    popUpTo(Routes.Shopping.route)
+                    launchSingleTop = true
+                }
+            },
             icon = { Icon(Icons.Default.ShoppingCart, null) },
             label = { Text("Compras") },
             colors = NavigationBarItemDefaults.colors(
