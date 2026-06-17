@@ -3,6 +3,7 @@ package com.example.foodprint.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.*
 import androidx.navigation.compose.NavHost
+import com.example.foodprint.ui.screens.shopping.ShoppingListScreen
 import com.example.foodprint.ui.screens.dashboard.DashboardScreen
 import com.example.foodprint.ui.screens.login.LoginScreen
 
@@ -30,7 +31,7 @@ fun AppNavGraph() {
             //ChefScreen()
         }
         composable(Routes.Shopping.route) {
-            //ShoppingScreen()
+            ShoppingListScreen(navController)
         }
     }
 }
