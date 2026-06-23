@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,29 +21,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.foodprint.ui.components.BottomBar
 import com.example.foodprint.ui.theme.StrongGreen
-
-data class ShoppingItem(
-    val id: Int,
-    val name: String,
-    val isChecked: Boolean = false
-)
+import com.example.foodprint.ui.viewmodel.InventoryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingListScreen(navController: NavController) {
-
-
-    var itemsList by remember {
-        mutableStateOf(
-            listOf(
-                ShoppingItem(id = 1, name = "Frango"),
-                ShoppingItem(id = 2, name = "Manjericão Fresco")
-            )
-        )
-    }
+fun ShoppingListScreen(
+    navController: NavController,
+    viewModel: InventoryViewModel
+) {
+    val itemsList by viewModel.shoppingState.collectAsState()
     var newItemName by remember { mutableStateOf("") }
-    var nextId by remember { mutableStateOf(3) } // Começa no 3 porque 1 e 2 já existem acima
-
+    var showFinalizationConfirmation by remember { mutableStateOf(false) }
 
     val pendingCount = itemsList.count { !it.isChecked }
     val completedCount = itemsList.count { it.isChecked }
@@ -64,8 +53,6 @@ fun ShoppingListScreen(navController: NavController) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            // LOGO
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
@@ -79,7 +66,6 @@ fun ShoppingListScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // CARD SUPERIOR
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -106,14 +92,12 @@ fun ShoppingListScreen(navController: NavController) {
                     ) {
                         Column {
                             Text(text = "Pendentes", color = Color.White.copy(alpha = 0.7f), fontSize = 12.sp)
-                            // MODIFICADO: Agora usa o contador dinâmico de pendentes
-                            Text(text = "$pendingCount", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text(text = pendingCount.toString(), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                         }
                         Spacer(modifier = Modifier.width(32.dp))
                         Column {
                             Text(text = "Concluídos", color = Color.White.copy(alpha = 0.7f), fontSize = 12.sp)
-                            // MODIFICADO: Agora usa o contador dinâmico de concluídos
-                            Text(text = "$completedCount", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text(text = completedCount.toString(), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -121,7 +105,6 @@ fun ShoppingListScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // CAMPO DE ENTRADA
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -143,8 +126,7 @@ fun ShoppingListScreen(navController: NavController) {
                 Button(
                     onClick = {
                         if (newItemName.isNotBlank()) {
-                            itemsList = itemsList + ShoppingItem(id = nextId, name = newItemName)
-                            nextId++
+                            viewModel.addShoppingItem(newItemName)
                             newItemName = ""
                         }
                     },
@@ -159,44 +141,48 @@ fun ShoppingListScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-
             AnimatedVisibility(visible = completedCount > 0) {
-                Button(
-                    onClick = {
-
-                        itemsList = itemsList.filter { !it.isChecked }
-                    },
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFFF0F0), // Rosa bem claro
-                        contentColor = Color(0xFFD32F2F)    // Vermelho do texto
-                    )
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Limpar",
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Limpar $completedCount items concluídos",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp
-                    )
+                    Button(
+                        onClick = { showFinalizationConfirmation = true },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = StrongGreen,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Icon(Icons.Default.CheckCircle, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("Concluir ($completedCount)", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
+
+                    Button(
+                        onClick = { viewModel.removeCheckedItems() },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFFFF0F0),
+                            contentColor = Color(0xFFD32F2F)
+                        )
+                    ) {
+                        Icon(Icons.Default.Delete, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("Excluir ($completedCount)", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // LISTA DE ITENS
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(items = itemsList, key = { it.id }) { item ->
-
-
                     val textColor = if (item.isChecked) Color.Gray.copy(alpha = 0.6f) else Color.Black
                     val textDecoration = if (item.isChecked) TextDecoration.LineThrough else TextDecoration.None
 
@@ -217,25 +203,19 @@ fun ShoppingListScreen(navController: NavController) {
                                 modifier = Modifier.weight(1f),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-
-
                                 RadioButton(
                                     selected = item.isChecked,
                                     onClick = {
-
-                                        itemsList = itemsList.map {
-                                            if (it.id == item.id) it.copy(isChecked = !item.isChecked) else it
-                                        }
+                                        viewModel.toggleShoppingCheck(item)
                                     },
                                     colors = RadioButtonDefaults.colors(
-                                        selectedColor = Color(0xFF4CAF50) // Bolinha fica verde quando ativa
+                                        selectedColor = Color(0xFF4CAF50)
                                     )
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
 
-
                                 Text(
-                                    text = item.name,
+                                    text = item.nome,
                                     fontSize = 16.sp,
                                     color = textColor,
                                     textDecoration = textDecoration
@@ -243,7 +223,7 @@ fun ShoppingListScreen(navController: NavController) {
                             }
 
                             IconButton(onClick = {
-                                itemsList = itemsList.filter { it.id != item.id }
+                                viewModel.removeFood(item)
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
@@ -256,5 +236,29 @@ fun ShoppingListScreen(navController: NavController) {
                 }
             }
         }
+    }
+
+    if (showFinalizationConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showFinalizationConfirmation = false },
+            title = { Text("Concluir Compra", fontWeight = FontWeight.Bold) },
+            text = { Text("Deseja mover os $completedCount itens marcados para o seu inventário?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.finalizeCheckedItems()
+                        showFinalizationConfirmation = false
+                    }
+                ) {
+                    Text("Sim, mover", color = StrongGreen, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showFinalizationConfirmation = false }) {
+                    Text("Não", color = Color.Gray)
+                }
+            },
+            containerColor = Color.White
+        )
     }
 }
